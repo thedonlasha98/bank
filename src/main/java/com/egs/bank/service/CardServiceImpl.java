@@ -59,7 +59,6 @@ public class CardServiceImpl implements CardService, AuthService {
     @Override
     public void setFingerprint(Long id, FingerprintRequest request) {
         Card card = cardRepository.findById(id).orElseThrow(() -> new EGSException(ErrorKey.CARD_NOT_FOUND));
-        validatePin(request.getPin(), card);
         if (StringUtils.hasText(card.getFingerprint())) {
             throw new EGSException(ErrorKey.FINGERPRINT_ALREADY_EXISTS);
         }
@@ -70,7 +69,6 @@ public class CardServiceImpl implements CardService, AuthService {
 
     @Override
     public CheckCardDto checkCard(String cardNo, String cvv, String expDate) {
-        if (1==1) {throw new RuntimeException();}
         Card card = cardRepository.getByCardNoAndExpDate(cardNo, expDate).orElseThrow(() -> new EGSException(ErrorKey.CARD_NOT_FOUND));
         boolean validCvv = encoder.matches(cvv, card.getCvv());
         if (!validCvv) {
