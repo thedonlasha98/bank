@@ -13,5 +13,7 @@ import java.util.Map;
 @Data
 public class BalanceDto {
 
-    Map<Currency, BigDecimal> balance;
+    Currency currency;
+
+    BigDecimal balance;
 }

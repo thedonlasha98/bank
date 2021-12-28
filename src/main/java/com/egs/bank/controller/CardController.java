@@ -1,17 +1,15 @@
 package com.egs.bank.controller;
 
-import com.egs.bank.enums.Currency;
 import com.egs.bank.model.dto.BalanceDto;
 import com.egs.bank.model.dto.CardDto;
 import com.egs.bank.model.request.CardRequest;
-import com.egs.bank.model.response.EGSResponse;
 import com.egs.bank.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/card")
@@ -24,18 +22,16 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @ResponseBody
     @PostMapping
-    EGSResponse<CardDto> registerCard(@RequestBody CardRequest cardRequest) {
+    ResponseEntity<CardDto> registerCard(@RequestBody CardRequest cardRequest) {
         CardDto response = cardService.registerCard(cardRequest);
-        return new EGSResponse(response, HttpStatus.CREATED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
-    @ResponseBody
     @GetMapping(value = "/{id}/balance")
-    EGSResponse<BalanceDto> getBalance(@PathVariable Long id) {
-        BalanceDto balance = cardService.getBalance(id);
+    ResponseEntity<List<BalanceDto>> getBalance(@PathVariable Long id) {
+        List<BalanceDto> balance = cardService.getBalance(id);
 
-        return new EGSResponse(balance, HttpStatus.OK);
+        return new ResponseEntity(balance, HttpStatus.CREATED);
     }
 }

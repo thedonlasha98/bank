@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CardServiceImpl implements CardService, AuthService {
@@ -76,11 +77,7 @@ public class CardServiceImpl implements CardService, AuthService {
         }
         validateCardStatus(card);
 
-        if (StringUtils.hasText(card.getFingerprint())) {
-            return new CheckCardDto(true, card.getId());
-        } else {
-            return new CheckCardDto(false, card.getId());
-        }
+        return new CheckCardDto(StringUtils.hasText(card.getFingerprint()), card.getId());
     }
 
     @Override
@@ -95,10 +92,10 @@ public class CardServiceImpl implements CardService, AuthService {
     }
 
     @Override
-    public BalanceDto getBalance(Long id) {
-        BalanceDto balanceDto = new BalanceDto(accountService.getBalance(id));
+    public List<BalanceDto> getBalance(Long id) {
+        List<BalanceDto> response = accountService.getBalance(id);
 
-        return balanceDto;
+        return response;
     }
 
     private Card generateCard(CardRequest cardRequest, String cvv, String cardNo, String pin) {

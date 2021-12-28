@@ -5,6 +5,7 @@ import com.egs.bank.domain.Card;
 import com.egs.bank.enums.Currency;
 import com.egs.bank.exception.EGSException;
 import com.egs.bank.exception.ErrorKey;
+import com.egs.bank.model.dto.BalanceDto;
 import com.egs.bank.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Map<Currency, BigDecimal> getBalance(Long id) {
+    public List<BalanceDto> getBalance(Long id) {
         List<Account> accounts = accountRepository.findByCardId(id);
         if (accounts == null){
             throw new EGSException(ErrorKey.ACCOUNT_NOT_FOUND);
         }
-        Map<Currency,BigDecimal> response = new HashMap<>();
+        List<BalanceDto> response = new ArrayList<>();
         for (Account account : accounts) {
-            response.put(account.getCurrency(),account.getBalance());
+            response.add(new BalanceDto(account.getCurrency(),account.getBalance()));
         }
 
         return response;
