@@ -1,10 +1,10 @@
 package com.egs.bank.controller;
 
+import com.egs.bank.exception.EGSException;
 import com.egs.bank.model.dto.CheckCardDto;
 import com.egs.bank.model.request.FingerprintRequest;
 import com.egs.bank.service.AuthService;
 import com.egs.bank.utils.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @GetMapping(value = "/card")
     ResponseEntity<CheckCardDto> checkCard(@RequestParam(name = "card_no") String cardNo,
                                            @RequestParam(name = "cvv") String cvv,
                                            @RequestParam(name = "exp_date") String expDate) {
-
+//        if (1==1){
+//            throw new EGSException("test",HttpStatus.BAD_REQUEST);
+//        }
         Utils.validateCard(cardNo, cvv, expDate);
 
         CheckCardDto response = authService.checkCard(cardNo, cvv, expDate);

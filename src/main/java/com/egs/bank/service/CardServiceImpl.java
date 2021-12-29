@@ -88,7 +88,7 @@ public class CardServiceImpl implements CardService, AuthService {
         validateFingerprint(card, fingerprint);
         validatePin(pin, card);
         successLogin(card);
-        return new CheckCardDto(StringUtils.hasText(fingerprint), card.getId());
+        return new CheckCardDto(StringUtils.hasText(card.getFingerprint()), card.getId());
     }
 
     @Override

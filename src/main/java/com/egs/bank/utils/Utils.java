@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 
 public class Utils {
 
-    public static final String randomNumberAlphabet= "0123456789";
+    public static final String randomNumberAlphabet = "0123456789";
     public static final String randomStringAlphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     public static String randomNumber(int len) {
@@ -30,20 +30,32 @@ public class Utils {
 
     public static void validateCard(String cardNo, String cvv, String expDate) {
 
-        if (cardNo.length() != 16 && cardNo != null){
+        if (cardNo.length() != 16 && cardNo != null) {
             throw new EGSException("Incorrect length of card_no parameter!", HttpStatus.BAD_REQUEST);
         }
-        if (cvv.length() != 3 && cvv != null){
+        if (cvv.length() != 3 && cvv != null) {
             throw new EGSException("Incorrect length of cvv parameter!", HttpStatus.BAD_REQUEST);
         }
-        if (!expDate.matches("(?:0[1-9]|1[0-2])/[0-9]{2}") && expDate != null){
+        if (!expDate.matches("(?:0[1-9]|1[0-2])/[0-9]{2}") && expDate != null) {
             throw new EGSException("Incorrect format of exp_date parameter!", HttpStatus.BAD_REQUEST);
         }
     }
 
     public static void validatePin(String pin) {
-        if (pin.length() != 4 && pin != null){
+        if (pin.length() != 4 && pin != null) {
             throw new EGSException("Incorrect length of pin parameter!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public static String maskCardNumber(String source) {
+        if (source.length() == 16) {
+            String first = source.substring(0, 6);
+            String last = source.substring(12);
+            String middle = "******";
+
+            return first + middle + last;
+        } else {
+            return source;
         }
     }
 }
