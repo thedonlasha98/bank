@@ -57,7 +57,7 @@ public class LoggingAspect {
         }
         ResponseEntity response = (ResponseEntity) joinPoint.proceed();
 
-        LOGGER.info("Http Response = {}", response.getBody().toString());
+        LOGGER.info("Http Response = {}", response.getBody());
 
         return response;
     }
